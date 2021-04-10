@@ -1,8 +1,12 @@
+import { BlackOpsOne_400Regular } from "@expo-google-fonts/dev";
 import { observer } from "mobx-react-lite";
 import React, { ReactElement } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FoodIcon from "./icons/FoodIcon";
+import PayIcon from "./icons/PayIcon";
+import SettingsIcon from "./icons/SettingsIcon";
 import { useNavigation } from "./mst/navigationStore";
+import { COLORS } from "./Styles/TextStyles";
 
 export const Navbar = observer(() => {
   const navigation = useNavigation();
@@ -16,6 +20,14 @@ export const Navbar = observer(() => {
       <NavItem
         route="search"
         icon={<FoodIcon active={navigation.currentView === "search"} />}
+      />
+      <NavItem
+        route="pay"
+        icon={<PayIcon active={navigation.currentView === "pay"} />}
+      />
+      <NavItem
+        route="settings"
+        icon={<SettingsIcon active={navigation.currentView === "settings"} />}
       />
     </View>
   );
@@ -34,6 +46,7 @@ function NavItem(props: NavItemProps) {
       onPress={() => {
         navigation.setView(props.route);
       }}
+      style={styles.touchable}
     >
       {props.icon}
     </TouchableOpacity>
@@ -48,11 +61,21 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 22,
     padding: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
   visible: {
     bottom: 10,
   },
   invisible: {
     bottom: -100,
+  },
+  touchable: {
+    paddingTop: 25,
+    paddingBottom: 25,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
 });

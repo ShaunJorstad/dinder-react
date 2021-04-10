@@ -9,6 +9,9 @@ import { Navbar } from "./Navbar";
 import { LogBox } from "react-native";
 import { signOut, watchAuthentication } from "./mst/FireScripts";
 import { CustomButton } from "./components/Buttons";
+import Search from "./components/Search";
+import Pay from "./components/Pay";
+import Settings from "./components/Settings";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -51,28 +54,21 @@ const Navigation = observer(() => {
   console.log(
     `Current navigation: ${navigation.authEmail} & ${navigation.currentView}`
   );
-  switch (navigation.authEmail) {
-    case "": {
-      switch (navigation.currentView) {
-        case "Login":
-          return <Login />;
-        default:
-          return (
-            <View>
-              <Text>Error: 404</Text>
-            </View>
-          );
-      }
-    }
-    default: {
+  switch (navigation.currentView) {
+    case "Login":
+      return <Login />;
+    case "search":
+      return <Search />;
+    case "pay":
+      return <Pay />;
+    case "settings":
+      return <Settings />;
+    default:
       return (
         <View>
-          <Text>Logged in as {navigation.authEmail}</Text>
-          <Text>Current view: {navigation.currentView}</Text>
-          <Button onPress={signOut} title="log out" />
+          <Text>Error: 404</Text>
         </View>
       );
-    }
   }
 });
 

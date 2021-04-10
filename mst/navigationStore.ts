@@ -8,6 +8,8 @@ const getNavbarVisibility = (view: string): boolean => {
     case "Login":
       return false;
     case "search":
+    case "settings":
+    case "pay":
       return true;
     default:
       return false;
