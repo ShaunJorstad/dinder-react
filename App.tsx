@@ -1,11 +1,16 @@
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useEffect } from "react";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { Login } from "./components/Login";
 import { useNavigation } from "./mst/navigationStore";
 import { Navbar } from "./Navbar";
+import { LogBox } from "react-native";
+import { signOut, watchAuthentication } from "./mst/FireScripts";
+import { CustomButton } from "./components/Buttons";
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
   const [loaded] = useFonts({
@@ -15,6 +20,23 @@ export default function App() {
     rubikBold: require("./assets/Rubik/static/Rubik-Bold.ttf"),
     rubikBlack: require("./assets/Rubik/static/Rubik-Black.ttf"),
   });
+
+  useEffect(() => {
+    const storeUserChange = (email: string) => {
+      const navigationStore = useNavigation();
+      navigationStore.setEmail(email);
+    };
+    watchAuthentication(storeUserChange);
+  }, []);
+
+  if (!loaded) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Navigation />
@@ -26,15 +48,31 @@ export default function App() {
 
 const Navigation = observer(() => {
   const navigation = useNavigation();
-  switch (navigation.currentView) {
-    case "Login":
-      return <Login />;
-    default:
+  console.log(
+    `Current navigation: ${navigation.authEmail} & ${navigation.currentView}`
+  );
+  switch (navigation.authEmail) {
+    case "": {
+      switch (navigation.currentView) {
+        case "Login":
+          return <Login />;
+        default:
+          return (
+            <View>
+              <Text>Error: 404</Text>
+            </View>
+          );
+      }
+    }
+    default: {
       return (
         <View>
-          <Text>Error: 404</Text>
+          <Text>Logged in as {navigation.authEmail}</Text>
+          <Text>Current view: {navigation.currentView}</Text>
+          <Button onPress={signOut} title="log out" />
         </View>
       );
+    }
   }
 });
 

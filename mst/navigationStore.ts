@@ -18,11 +18,22 @@ export const navigationModel = types
   .model({
     currentView: types.string,
     navbarVisibility: types.boolean,
+    authEmail: types.string,
   })
   .actions((store) => ({
     setView(nextScreen: string) {
       store.currentView = nextScreen;
       store.navbarVisibility = getNavbarVisibility(nextScreen);
+    },
+    setEmail(email: string) {
+      store.authEmail = email;
+      if (email === "") {
+        store.currentView = "Login";
+        store.navbarVisibility = getNavbarVisibility("Login");
+      } else {
+        store.currentView = "search";
+        store.navbarVisibility = getNavbarVisibility("search");
+      }
     },
   }));
 
@@ -32,6 +43,7 @@ export const useNavigation = () => {
     _navigation = navigationModel.create({
       currentView: "Login",
       navbarVisibility: getNavbarVisibility("Login"),
+      authEmail: "",
     });
   }
   return _navigation;
