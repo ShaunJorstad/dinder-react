@@ -3,8 +3,10 @@ import React, { ReactElement } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreateGroupIcon from "../icons/CreateGroupIcon";
 import JoinIcon from "../icons/JoinIcon";
+import { useNavigation } from "../mst/navigationStore";
 import { COLORS, TextStyles } from "../Styles/TextStyles";
 const Search = observer(() => {
+  const navigationStore = useNavigation();
   return (
     <View style={styles.container}>
       <View>{/* spacer view */}</View>
@@ -14,7 +16,7 @@ const Search = observer(() => {
           label="Create"
           icon={<CreateGroupIcon />}
           onClick={() => {
-            console.log("creating group");
+            navigationStore.setView("createSession");
           }}
         />
         <Card

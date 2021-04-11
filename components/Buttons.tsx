@@ -13,11 +13,13 @@ import { COLORS } from "../Styles/TextStyles";
 enum ButtonType {
   largePrimary,
   link,
+  largeLink,
+  wrap,
 }
 
 interface ButtonProps {
   type: ButtonType;
-  text: string;
+  text?: string;
   disable?: boolean;
   onClick?: any;
   icon?: any;
@@ -29,9 +31,21 @@ const CustomButton = (props: ButtonProps) => {
       return <LargePrimaryButton {...props} />;
     case ButtonType.link:
       return <Link {...props} />;
+    case ButtonType.largeLink:
+      return <LargeLink {...props} />;
+    case ButtonType.wrap:
+      return <Wrap {...props} />;
     default:
       return <></>;
   }
+};
+
+const Wrap = (props: ButtonProps) => {
+  return (
+    <TouchableOpacity style={{ padding: 15 }} onPress={props.onClick}>
+      {props.icon}
+    </TouchableOpacity>
+  );
 };
 
 const Link = (props: ButtonProps) => {
@@ -44,6 +58,17 @@ const Link = (props: ButtonProps) => {
         <Text style={styles.Link}>{props.text}</Text>
       </TouchableOpacity>
     </View>
+  );
+};
+
+const LargeLink = (props: ButtonProps) => {
+  return (
+    <TouchableOpacity
+      style={{ padding: 15, marginRight: -15 }}
+      onPress={props.onClick}
+    >
+      <Text style={styles.LargeLink}>{props.text}</Text>
+    </TouchableOpacity>
   );
 };
 
@@ -94,6 +119,11 @@ const styles = StyleSheet.create({
     color: COLORS.orange,
     textAlign: "right",
     width: "100%",
+  },
+  LargeLink: {
+    fontFamily: "rubikRegular",
+    fontSize: 16,
+    color: COLORS.orange,
   },
   disable: {
     backgroundColor: "#96A3AB",

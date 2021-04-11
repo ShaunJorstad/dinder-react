@@ -76,3 +76,35 @@ export function authorizeWithGoogle() {
       var credential = error.credential;
     });
 }
+
+export function deleteSessionDoc(docID: string) {
+  fireStore.collection("Sessions").doc(docID).delete();
+}
+
+export function createSessionDoc(): Promise<any> {
+  console.log("Generating a document");
+  let code = Math.floor(Math.random() * (99999 - 10000) + 10000);
+  let docID = code.toString();
+  return fireStore
+    .collection("Sessions")
+    .doc(docID)
+    .get()
+    .then((doc: any) => {
+      if (doc.exists) {
+        console.log("document exists");
+        return createSessionDoc();
+      } else {
+        return fireStore
+          .collection("Sessions")
+          .doc(docID)
+          .set({
+            id: code,
+          })
+          .then(() => {
+            return new Promise((resolve, reject) => {
+              resolve(docID);
+            });
+          });
+      }
+    });
+}

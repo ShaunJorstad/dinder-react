@@ -4,8 +4,8 @@ import { createContext, useContext } from "react";
 const getNavbarVisibility = (view: string): boolean => {
   switch (view) {
     case "Onboard":
-      return false;
     case "Login":
+    case "CreateSession":
       return false;
     case "search":
     case "settings":

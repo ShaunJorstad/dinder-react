@@ -12,6 +12,7 @@ import { CustomButton } from "./components/Buttons";
 import Search from "./components/Search";
 import Pay from "./components/Pay";
 import Settings from "./components/Settings";
+import CreateSession from "./components/CreateSession";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -63,6 +64,8 @@ const Navigation = observer(() => {
       return <Pay />;
     case "settings":
       return <Settings />;
+    case "createSession":
+      return <CreateSession />;
     default:
       return (
         <View>
