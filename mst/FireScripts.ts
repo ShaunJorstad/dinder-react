@@ -33,12 +33,12 @@ export function signOut() {
   auth.signOut();
 }
 
-export function signIn(email: string, password: string) {
-  auth.signInWithEmailAndPassword(email, password);
+export function signIn(email: string, password: string): Promise<any> {
+  return auth.signInWithEmailAndPassword(email, password);
 }
 
-export function signUp(email: string, password: string) {
-  auth
+export function signUp(email: string, password: string): Promise<any> {
+  return auth
     .createUserWithEmailAndPassword(email, password)
     .then((credential) => {
       fireStore
@@ -50,10 +50,11 @@ export function signUp(email: string, password: string) {
         .catch((error) => {
           console.log(error);
         });
-    })
-    .catch((error) => {
-      console.log(error);
     });
+}
+
+export function sendPasswordReset(email: string): Promise<any> {
+  return auth.sendPasswordResetEmail(email);
 }
 
 /**

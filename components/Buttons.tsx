@@ -12,6 +12,7 @@ import { COLORS } from "../Styles/TextStyles";
 
 enum ButtonType {
   largePrimary,
+  link,
 }
 
 interface ButtonProps {
@@ -26,9 +27,24 @@ const CustomButton = (props: ButtonProps) => {
   switch (props.type) {
     case ButtonType.largePrimary:
       return <LargePrimaryButton {...props} />;
+    case ButtonType.link:
+      return <Link {...props} />;
     default:
       return <></>;
   }
+};
+
+const Link = (props: ButtonProps) => {
+  return (
+    <View style={{ width: "85%" }}>
+      <TouchableOpacity
+        style={{ padding: 15, marginRight: -15 }}
+        onPress={props.onClick}
+      >
+        <Text style={styles.Link}>{props.text}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const LargePrimaryButton = (props: ButtonProps) => {
@@ -71,6 +87,13 @@ const styles = StyleSheet.create({
     fontFamily: "rubikRegular",
     fontSize: 17,
     letterSpacing: 1,
+  },
+  Link: {
+    fontFamily: "rubikRegular",
+    fontSize: 14,
+    color: COLORS.orange,
+    textAlign: "right",
+    width: "100%",
   },
   disable: {
     backgroundColor: "#96A3AB",

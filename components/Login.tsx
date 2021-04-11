@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import {
   authorizeWithGoogle,
   emailIsRegistered,
+  sendPasswordReset,
   signIn,
   signUp,
 } from "../mst/FireScripts";
@@ -38,14 +39,18 @@ export const Login = observer(() => {
       case "registered": {
         console.log("user is registered");
         // log in
-        signIn(email, password);
+        signIn(email, password).catch((error: any) => {
+          createAlert(error.message, "We couldn't sign you in");
+        });
         break;
       }
       case "unregistered": {
         console.log("user is not registered");
         // join
         if (password === confirmPassword) {
-          signUp(email, password);
+          signUp(email, password).catch((error: any) => {
+            createAlert(error.message, "We couldn't sign you up");
+          });
         } else {
           // display error
           createAlert("passwords must match", "We couldn't sign you up");
@@ -85,7 +90,18 @@ export const Login = observer(() => {
       case "unknown":
         return <></>;
       case "registered":
-        return passwordField;
+        return (
+          <>
+            {passwordField}
+            <CustomButton
+              type={ButtonType.link}
+              text="Reset Password"
+              onClick={() => {
+                resetPasswordHandler();
+              }}
+            />
+          </>
+        );
       case "unregistered":
         return (
           <>
@@ -93,6 +109,39 @@ export const Login = observer(() => {
             {confirmPassowrdField}
           </>
         );
+    }
+  };
+
+  const resetPasswordHandler = () => {
+    if (email === "") {
+      createAlert(
+        "Please enter an email to send the password reset to",
+        "Email?"
+      );
+    } else {
+      // confirm email being sent
+      Alert.alert("Confirm email", `send recovery email to: ${email}`, [
+        {
+          text: "cancel",
+          style: "cancel",
+        },
+        {
+          text: "confirm",
+          onPress: () => {
+            console.log("sent");
+            sendPasswordReset(email)
+              .then(() => {
+                createAlert(
+                  `password reset email sent to ${email}`,
+                  "Check your email"
+                );
+              })
+              .catch((error) => {
+                createAlert(error.message, "unable to reset password");
+              });
+          },
+        },
+      ]);
     }
   };
 
