@@ -11,6 +11,7 @@ import {
 import { useNavigation } from "../mst/navigationStore";
 import { TextStyles } from "../Styles/TextStyles";
 import { ButtonType, CustomButton } from "./Buttons";
+import ExpoStyle from "./ExpoStyle";
 
 export const Login = observer(() => {
   const navigation = useNavigation();
@@ -187,29 +188,31 @@ export const Login = observer(() => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>{/* spacer view */}</View>
-      <View>{/* spacer view */}</View>
-      <Text style={TextStyles.largeHeader}>Login</Text>
-      <View>{/* spacer view */}</View>
-      <View style={styles.fieldsContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={email}
-          onChangeText={setEmail}
-          placeholder={"email"}
+    <ExpoStyle>
+      <View style={styles.container}>
+        <View>{/* spacer view */}</View>
+        <View>{/* spacer view */}</View>
+        <Text style={TextStyles.largeHeader}>Login</Text>
+        <View>{/* spacer view */}</View>
+        <View style={styles.fieldsContainer}>
+          <TextInput
+            style={styles.textInput}
+            value={email}
+            onChangeText={setEmail}
+            placeholder={"email"}
+          />
+          {renderPasswordFields()}
+        </View>
+        <CustomButton
+          onClick={() => {
+            nextButtonHandler();
+          }}
+          disable={disableButton()}
+          type={ButtonType.largePrimary}
+          text={renderButtonText()}
         />
-        {renderPasswordFields()}
       </View>
-      <CustomButton
-        onClick={() => {
-          nextButtonHandler();
-        }}
-        disable={disableButton()}
-        type={ButtonType.largePrimary}
-        text={renderButtonText()}
-      />
-    </View>
+    </ExpoStyle>
   );
 });
 

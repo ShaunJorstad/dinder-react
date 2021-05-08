@@ -5,14 +5,20 @@ import React, { useEffect } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { Login } from "./components/Login";
 import { useNavigation } from "./mst/navigationStore";
-import { Navbar } from "./Navbar";
+import { Navbar } from "./components/Navbar";
 import { LogBox } from "react-native";
 import { signOut, watchAuthentication } from "./mst/FireScripts";
 import { CustomButton } from "./components/Buttons";
 import Search from "./components/Search";
 import Pay from "./components/Pay";
 import Settings from "./components/Settings";
-import CreateSession from "./components/CreateSession";
+import CreateSession from "./components/CreateSession/CreateSession";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import MainTabView from "./components/MainTabView";
+import SessionQRCode from "./components/CreateSession/SessionQRCode";
+
+const Stack = createStackNavigator();
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -41,13 +47,7 @@ export default function App() {
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <Navigation />
-      <Navbar />
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Navigation />;
 }
 
 const Navigation = observer(() => {
@@ -55,24 +55,28 @@ const Navigation = observer(() => {
   console.log(
     `Current navigation: ${navigation.authEmail} & ${navigation.currentView}`
   );
-  switch (navigation.currentView) {
-    case "Login":
-      return <Login />;
-    case "search":
-      return <Search />;
-    case "pay":
-      return <Pay />;
-    case "settings":
-      return <Settings />;
-    case "createSession":
-      return <CreateSession />;
-    default:
-      return (
-        <View>
-          <Text>Error: 404</Text>
-        </View>
-      );
-  }
+
+  const isSignedIn = () => {
+    return navigation.authEmail !== "";
+  };
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {isSignedIn() ? (
+          <>
+            <Stack.Screen name="main-tabs" component={MainTabView} />
+            <Stack.Screen name="create-session" component={CreateSession} />
+            <Stack.Screen name="qr-code" component={SessionQRCode} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="login" component={Login} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 });
 
 const styles = StyleSheet.create({

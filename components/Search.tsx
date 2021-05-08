@@ -5,7 +5,8 @@ import CreateGroupIcon from "../icons/CreateGroupIcon";
 import JoinIcon from "../icons/JoinIcon";
 import { useNavigation } from "../mst/navigationStore";
 import { COLORS, TextStyles } from "../Styles/TextStyles";
-const Search = observer(() => {
+
+const Search = observer((props: any) => {
   const navigationStore = useNavigation();
   return (
     <View style={styles.container}>
@@ -16,7 +17,7 @@ const Search = observer(() => {
           label="Create"
           icon={<CreateGroupIcon />}
           onClick={() => {
-            navigationStore.setView("createSession");
+            props.navigation.push("create-session");
           }}
         />
         <Card

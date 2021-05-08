@@ -78,6 +78,7 @@ export function authorizeWithGoogle() {
 }
 
 export function deleteSessionDoc(docID: string) {
+  console.log(`Deleting ${docID} document`);
   fireStore.collection("Sessions").doc(docID).delete();
 }
 

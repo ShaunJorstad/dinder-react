@@ -2,11 +2,11 @@ import { BlackOpsOne_400Regular } from "@expo-google-fonts/dev";
 import { observer } from "mobx-react-lite";
 import React, { ReactElement } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import FoodIcon from "./icons/FoodIcon";
-import PayIcon from "./icons/PayIcon";
-import SettingsIcon from "./icons/SettingsIcon";
-import { useNavigation } from "./mst/navigationStore";
-import { COLORS } from "./Styles/TextStyles";
+import FoodIcon from "../icons/FoodIcon";
+import PayIcon from "../icons/PayIcon";
+import SettingsIcon from "../icons/SettingsIcon";
+import { useNavigation } from "../mst/navigationStore";
+import { COLORS } from "../Styles/TextStyles";
 
 export const Navbar = observer(() => {
   const navigation = useNavigation();
